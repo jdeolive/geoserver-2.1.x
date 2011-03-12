@@ -64,8 +64,11 @@ public class GSFTPUserManager implements org.apache.ftpserver.ftplet.UserManager
 
     private AuthenticationManager authManager;
 
-    public GSFTPUserManager(GeoServerDataDirectory dataDir) {
+    private FTPConfigLoader configLoader;
+
+    public GSFTPUserManager(GeoServerDataDirectory dataDir, FTPConfigLoader configLoader) {
         this.dataDir = dataDir;
+        this.configLoader = configLoader;
     }
 
     public void setAuthenticationManager(AuthenticationManager authManager) {
@@ -114,8 +117,7 @@ public class GSFTPUserManager implements org.apache.ftpserver.ftplet.UserManager
                         + "open file host for everybody to use!!!");
             }
 
-            final File dataRoot = dataDir.findOrCreateDataRoot();
-
+            FTPConfig config = configLoader.getConfig();
             // enable only admins and non anonymous users
             boolean isGSAdmin = false;
             for (GrantedAuthority authority : gsAuth.getAuthorities()) {
@@ -127,15 +129,17 @@ public class GSFTPUserManager implements org.apache.ftpserver.ftplet.UserManager
             }
 
             final File homeDirectory;
-            if (isGSAdmin) {
-                homeDirectory = dataRoot;
+            if (isGSAdmin && config.isExposeDataDirRootToAdmin()) {
+                homeDirectory = dataDir.findOrCreateDataRoot();
             } else {
+                File userRoot =  
+                    dataDir.getResourceLoader().findOrCreateDirectory(config.getUserRoot());
                 /*
                  * This resolves the user's home directory to data/incoming/<user name> but does not
                  * create the directory if it does not already exist. That is left to when the user
                  * is authenticated, check the authenticate() method above.
                  */
-                homeDirectory = new File(new File(dataRoot, "incoming"), user.getName());
+                homeDirectory = new File(userRoot, user.getName());
             }
             String normalizedPath = homeDirectory.getAbsolutePath();
             normalizedPath = FilenameUtils.normalize(normalizedPath);

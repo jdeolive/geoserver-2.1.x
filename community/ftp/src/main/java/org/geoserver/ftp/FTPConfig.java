@@ -14,7 +14,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author groldan
  * @see FTPConfigLoader
  */
-class FTPConfig {
+public class FTPConfig {
 
     private static final Integer DEFAULT_FTP_PORT = 8021;
 
@@ -42,6 +42,10 @@ class FTPConfig {
 
     private String passiveExternalAddress;
 
+    private boolean exposeDataDirRootToAdmin;
+    
+    private String userRoot;
+    
     public FTPConfig() {
         setDefaults();
     }
@@ -54,6 +58,8 @@ class FTPConfig {
         passivePorts = DEFAULT_PASSIVE_PORT_RANGE;
         passiveAddress = DEFAULT_PASSIVE_ADDRESS;
         passiveExternalAddress = DEGAULT_PASSIVE_EXTERNAL_ADDRESS;
+        exposeDataDirRootToAdmin = true;
+        userRoot =  "data/incoming";
     }
 
     public boolean isEnabled() {
@@ -131,5 +137,39 @@ class FTPConfig {
     
     public String getDocumentation(){
         return "this is the ftpconfig documentation";
+    }
+    
+    /**
+     * Flag that controls whether the admin user has access to the root of the data directory.
+     * <p>
+     * If unset the admin user will be "sandboxed" to {@link #getUserRoot()}.
+     * </p>
+     */
+    public boolean isExposeDataDirRootToAdmin() {
+        return exposeDataDirRootToAdmin;
+    }
+
+    /**
+     * Sets the flag that controls whether the admin user has access to the root of the data 
+     * directory.
+     * 
+     * @see {@link #isExposeDataDirRootToAdmin()}
+     */
+    public void setExposeDataDirRootToAdmin(boolean exposeDataDirRootToAdmin) {
+        this.exposeDataDirRootToAdmin = exposeDataDirRootToAdmin;
+    }
+    
+    /**
+     * The root directory relative to the data directory that user ftp data is stored in.
+     */
+    public String getUserRoot() {
+        return userRoot;
+    }
+    
+    /**
+     * Sets the root directory relative to the data directory that user ftp data is stored in.
+     */
+    public void setUserRoot(String userRoot) {
+        this.userRoot = userRoot;
     }
 }
