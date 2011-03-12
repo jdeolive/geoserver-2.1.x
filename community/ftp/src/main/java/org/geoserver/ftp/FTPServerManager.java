@@ -4,6 +4,7 @@
  */
 package org.geoserver.ftp;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,11 +50,11 @@ public class FTPServerManager implements ApplicationListener {
      * @param userManager
      */
     public FTPServerManager(final UserManager userManager, FtpLetFinder callbacks,
-            FTPConfigLoader loader) {
+            FTPConfigLoader loader) throws IOException {
         this.userManager = userManager;
         this.callbacks = callbacks;
         this.loader = loader;
-        this.config = loader.load();
+        this.config = loader.getConfig();
         configureServer();
     }
 

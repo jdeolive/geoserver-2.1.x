@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.geoserver.platform.FileWatcher;
 import org.geoserver.platform.GeoServerResourceLoader;
 
 import com.thoughtworks.xstream.XStream;
@@ -32,16 +33,49 @@ import com.thoughtworks.xstream.io.xml.StaxWriter;
  * @author groldan
  * 
  */
-class FTPConfigLoader {
+public class FTPConfigLoader {
     private static final String CONFIG_FILE_NAME = "ftp.xml";
 
+    private FTPConfig config;
+    private FileWatcher<FTPConfig> configFileWatcher;
     private GeoServerResourceLoader resourceLoader;
 
-    public FTPConfigLoader(final GeoServerResourceLoader resourceLoader) {
+    public FTPConfigLoader(final GeoServerResourceLoader resourceLoader) throws IOException {
         this.resourceLoader = resourceLoader;
+        
+        //create the config file if it does not exist
+        File configFile = findConfigFile();
+        if (!configFile.exists()) {
+            FTPConfig ftpConfig = new FTPConfig();
+            save(ftpConfig);
+        }
+        
+        //create the file watcher
+        configFileWatcher = new FileWatcher<FTPConfig>(null) {
+            protected FTPConfig parseFileContents(InputStream in) throws IOException {
+                return load();
+            };
+        };
+    }
+    
+    public FTPConfig getConfig() throws IOException {
+        if (configFileWatcher.isModified()) {
+            synchronized (this) {
+                if (configFileWatcher.isModified()) {
+                    config = configFileWatcher.read();
+                }
+            }
+        }
+        return config;
+    }
+    
+    public void save() throws IOException {
+        synchronized (this) {
+            save(config);
+        }
     }
 
-    public FTPConfig load() {
+    private FTPConfig load() {
         InputStream in = null;
         try {
             File configFile = findConfigFile();
@@ -99,7 +133,7 @@ class FTPConfigLoader {
         return xStream;
     }
 
-    public void save(FTPConfig config) {
+    private void save(FTPConfig config) {
         File configFile;
         OutputStream out = null;
         try {
