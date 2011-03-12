@@ -21,6 +21,19 @@ import org.springframework.security.userdetails.UserDetails;
 public interface FTPCallback {
 
     /**
+     * Notification of a login of the given {@code user}.
+     * 
+     * @param user
+     *            the GeoServer authenticated user performing the operation
+     * @param workingDir
+     *            the absolute path to the current working directory where the user will be located
+     *            upon successful login.
+     * @return whether to continue with normal processing of the request, abort, or abort AND shut
+     *         down the connection.
+     */
+    CallbackAction onLogin(UserDetails user, File workingDir);
+    
+    /**
      * Notification of a delete file request by the given {@code user}, on the given working
      * directory.
      * 

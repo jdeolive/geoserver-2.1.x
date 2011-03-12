@@ -22,6 +22,16 @@ public class DefaultFTPCallback implements FTPCallback {
      * Empty implementation; override to take action
      * 
      * @return {@link CallbackAction#CONTINUE}
+     * @see org.geoserver.ftp.FTPCallback#onLogin(UserDetails, File)
+     */
+    public CallbackAction onLogin(UserDetails user, File workingDir) {
+        return CONTINUE;
+    }
+
+    /**
+     * Empty implementation; override to take action
+     * 
+     * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onDeleteStart
      */
     public CallbackAction onDeleteStart(UserDetails user, File workingDir, String fileName) {

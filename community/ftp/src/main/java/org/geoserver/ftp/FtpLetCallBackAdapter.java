@@ -50,6 +50,19 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
     }
 
     /**
+     * Notifies the {@link FTPCallback} of a user login.
+     * 
+     * @see FTPCallback#onLogin(UserDetails, File)
+     */
+    @Override
+    public FtpletResult onLogin(FtpSession session, FtpRequest request) throws FtpException,
+            IOException {
+        UserDetails user = user(session.getUser());
+        File workingDir = workingDir(session);
+        return toFtpResult(callback.onLogin(user, workingDir));
+    }
+    
+    /**
      * Notifies the {@link FTPCallback} of file delete requests
      * 
      * @see FTPCallback#onDeleteStart
