@@ -20,8 +20,9 @@
 	<bean id="gsFtpUserManager" class="org.geoserver.ftp.GSFTPUserManager"
 		depends-on="geoServer">
 		<constructor-arg ref="dataDirectory"/>
+		<constructor-arg ref="ftpConfigLoader" />
         <property name="authenticationManager" ref="authenticationManager"/>
-	</bean>
+    </bean>
 
 
 	<bean id="ftpServerManager" class="org.geoserver.ftp.FTPServerManager">

@@ -41,8 +41,6 @@ public class FTPServerManager implements ApplicationListener {
 
     private FTPConfigLoader loader;
 
-    private FTPConfig config;
-
     /**
      * Sets up the {@link FtpServer FTP Server} managed by this bean using the provided
      * {@code userManager}
@@ -54,15 +52,20 @@ public class FTPServerManager implements ApplicationListener {
         this.userManager = userManager;
         this.callbacks = callbacks;
         this.loader = loader;
-        this.config = loader.getConfig();
         configureServer();
+    }
+    
+    public FTPConfigLoader getConfigLoader() {
+        return loader;
     }
 
     /**
      * Creates the FTP server and sets up the FTP listeners by looking up the application context
      * for instances of the {@link FTPCallback} extension point.
      */
-    private void configureServer() {
+    private void configureServer() throws IOException {
+        FTPConfig config = loader.getConfig();
+        
         FtpServerFactory serverFactory = new FtpServerFactory();
         ListenerFactory listenerFactory = new ListenerFactory();
         DataConnectionConfigurationFactory dataConnConfigFac = new DataConnectionConfigurationFactory();
@@ -130,7 +133,9 @@ public class FTPServerManager implements ApplicationListener {
         ftp = serverFactory.createServer();
     }
 
-    public void startServer() throws FtpException {
+    public void startServer() throws FtpException, IOException {
+        FTPConfig config = loader.getConfig();
+        
         if (!config.isEnabled()) {
             return;
         }
@@ -141,7 +146,8 @@ public class FTPServerManager implements ApplicationListener {
         }
     }
 
-    public void stopServer() {
+    public void stopServer() throws IOException {
+        FTPConfig config = loader.getConfig();
         if (!ftp.isStopped()) {
             LOGGER.info("Stopping GeoServer FTP Server on port " + config.getFtpPort());
             ftp.stop();
@@ -162,11 +168,16 @@ public class FTPServerManager implements ApplicationListener {
         if (event instanceof ContextRefreshedEvent) {
             try {
                 startServer();
-            } catch (FtpException e) {
+            } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, "Could not start the embedded FTP server", e);
             }
         } else if (event instanceof ContextStoppedEvent || event instanceof ContextClosedEvent) {
-            stopServer();
+            try {
+                stopServer();
+            } 
+            catch (IOException e) {
+                LOGGER.log(Level.WARNING, e.getMessage(), e);
+            }
         }
     }
 

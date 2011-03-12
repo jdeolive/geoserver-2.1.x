@@ -51,7 +51,7 @@ public class FTPConfigLoader {
         }
         
         //create the file watcher
-        configFileWatcher = new FileWatcher<FTPConfig>(null) {
+        configFileWatcher = new FileWatcher<FTPConfig>(configFile) {
             protected FTPConfig parseFileContents(InputStream in) throws IOException {
                 return load();
             };
