@@ -68,6 +68,13 @@ public class GeoServerDataDirectory {
     }
     
     /**
+     * Returns the underlying resource loader.
+     */
+    public GeoServerResourceLoader getResourceLoader() {
+        return resourceLoader;
+    }
+    
+    /**
      * The root of the data directory.
      */
     public File root() {
