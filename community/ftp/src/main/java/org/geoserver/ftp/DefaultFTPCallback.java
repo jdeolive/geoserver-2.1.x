@@ -7,7 +7,10 @@ package org.geoserver.ftp;
 import static org.geoserver.ftp.CallbackAction.CONTINUE;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.ftpserver.ftplet.FtpException;
+import org.apache.ftpserver.ftplet.FtpSession;
 import org.springframework.security.userdetails.UserDetails;
 
 /**
@@ -24,7 +27,7 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onLogin(UserDetails, File)
      */
-    public CallbackAction onLogin(UserDetails user, File workingDir) {
+    public CallbackAction onLogin(UserDetails user, File workingDir, FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -34,7 +37,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onDeleteStart
      */
-    public CallbackAction onDeleteStart(UserDetails user, File workingDir, String fileName) {
+    public CallbackAction onDeleteStart(UserDetails user, File workingDir, String fileName,
+        FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -44,7 +48,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onDeleteEnd
      */
-    public CallbackAction onDeleteEnd(UserDetails user, File workingDir, String fileName) {
+    public CallbackAction onDeleteEnd(UserDetails user, File workingDir, String fileName,
+        FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -54,7 +59,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onUploadStart
      */
-    public CallbackAction onUploadStart(UserDetails user, File workingDir, String fileName) {
+    public CallbackAction onUploadStart(UserDetails user, File workingDir, String fileName,
+        FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -64,7 +70,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onUploadEnd
      */
-    public CallbackAction onUploadEnd(UserDetails user, File workingDir, String fileName) {
+    public CallbackAction onUploadEnd(UserDetails user, File workingDir, String fileName,
+        FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -74,7 +81,9 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onDownloadStart
      */
-    public CallbackAction onDownloadStart(UserDetails user, File workingDir, String fileName) {
+    public CallbackAction onDownloadStart(UserDetails user, File workingDir, String fileName,
+        FtpSession session)
+        throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -84,7 +93,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onDownloadEnd
      */
-    public CallbackAction onDownloadEnd(UserDetails user, File workingDir, String fileName) {
+    public CallbackAction onDownloadEnd(UserDetails user, File workingDir, String fileName,
+        FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -94,7 +104,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onRemoveDirStart
      */
-    public CallbackAction onRemoveDirStart(UserDetails user, File workingDir, String dirName) {
+    public CallbackAction onRemoveDirStart(UserDetails user, File workingDir, String dirName,
+        FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -104,7 +115,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onRemoveDirEnd
      */
-    public CallbackAction onRemoveDirEnd(UserDetails user, File workingDir, String dirName) {
+    public CallbackAction onRemoveDirEnd(UserDetails user, File workingDir, String dirName,
+        FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -114,7 +126,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onMakeDirStart
      */
-    public CallbackAction onMakeDirStart(UserDetails user, File workingDir, String dirName) {
+    public CallbackAction onMakeDirStart(UserDetails user, File workingDir, String dirName,
+        FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -124,7 +137,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onMakeDirEnd
      */
-    public CallbackAction onMakeDirEnd(UserDetails user, File workingDir, String dirName) {
+    public CallbackAction onMakeDirEnd(UserDetails user, File workingDir, String dirName,
+        FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -134,7 +148,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onAppendStart
      */
-    public CallbackAction onAppendStart(UserDetails user, File workingDir, String fileName) {
+    public CallbackAction onAppendStart(UserDetails user, File workingDir, String fileName,
+        FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -144,7 +159,8 @@ public class DefaultFTPCallback implements FTPCallback {
      * @return {@link CallbackAction#CONTINUE}
      * @see org.geoserver.ftp.FTPCallback#onAppendEnd
      */
-    public CallbackAction onAppendEnd(UserDetails user, File workingDir, String fileName) {
+    public CallbackAction onAppendEnd(UserDetails user, File workingDir, String fileName,
+        FtpSession session) throws IOException, FtpException{
         return CONTINUE;
     }
 
@@ -155,7 +171,7 @@ public class DefaultFTPCallback implements FTPCallback {
      * @see org.geoserver.ftp.FTPCallback#onRenameStart
      */
     public CallbackAction onRenameStart(UserDetails user, File workingDir, File renameFrom,
-            File renameTo) {
+        File renameTo, FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
@@ -166,8 +182,18 @@ public class DefaultFTPCallback implements FTPCallback {
      * @see org.geoserver.ftp.FTPCallback#onRenameEnd
      */
     public CallbackAction onRenameEnd(UserDetails user, File workingDir, File renameFrom,
-            File renameTo) {
+        File renameTo, FtpSession session) throws IOException, FtpException {
         return CONTINUE;
     }
 
+    /**
+     * Empty implementation; override to take action
+     * 
+     * @return {@link CallbackAction#CONTINUE}
+     * @see org.geoserver.ftp.FTPCallback#onDisconnect
+     */
+    public CallbackAction onDisconnect(UserDetails user, File workingDir, FtpSession session)
+            throws IOException, FtpException {
+        return CONTINUE;
+    }
 }

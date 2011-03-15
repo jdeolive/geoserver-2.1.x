@@ -5,7 +5,10 @@
 package org.geoserver.ftp;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.ftpserver.ftplet.FtpException;
+import org.apache.ftpserver.ftplet.FtpSession;
 import org.springframework.security.userdetails.UserDetails;
 
 /**
@@ -31,7 +34,7 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onLogin(UserDetails user, File workingDir);
+    CallbackAction onLogin(UserDetails user, File workingDir, FtpSession session) throws IOException, FtpException;
     
     /**
      * Notification of a delete file request by the given {@code user}, on the given working
@@ -48,7 +51,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onDeleteStart(UserDetails user, File workingDir, String fileName);
+    CallbackAction onDeleteStart(UserDetails user, File workingDir, String fileName, FtpSession session) 
+        throws IOException, FtpException;
 
     /**
      * Notification of success to a delete file request by the given {@code user}, on the given
@@ -64,7 +68,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onDeleteEnd(UserDetails user, File workingDir, String fileName);
+    CallbackAction onDeleteEnd(UserDetails user, File workingDir, String fileName, FtpSession session) 
+        throws IOException, FtpException;
 
     /**
      * Notification of an upload file request by the given {@code user}, on the given working
@@ -81,7 +86,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onUploadStart(UserDetails user, File workingDir, String fileName);
+    CallbackAction onUploadStart(UserDetails user, File workingDir, String fileName, FtpSession session)
+        throws IOException, FtpException;
 
     /**
      * Notification of success to an upload file request by the given {@code user}, on the given
@@ -97,7 +103,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onUploadEnd(UserDetails user, File workingDir, String fileName);
+    CallbackAction onUploadEnd(UserDetails user, File workingDir, String fileName, FtpSession session)
+        throws IOException, FtpException;
 
     /**
      * Notification of a download file request by the given {@code user}, on the given working
@@ -114,7 +121,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onDownloadStart(UserDetails user, File workingDir, String fileName);
+    CallbackAction onDownloadStart(UserDetails user, File workingDir, String fileName, FtpSession session)
+        throws IOException, FtpException;
 
     /**
      * Notification of success to a download file request by the given {@code user}, on the given
@@ -130,7 +138,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onDownloadEnd(UserDetails user, File workingDir, String fileName);
+    CallbackAction onDownloadEnd(UserDetails user, File workingDir, String fileName, FtpSession session)
+        throws IOException, FtpException;
 
     /**
      * Notification of a remove directory request by the given {@code user}, on the given working
@@ -147,7 +156,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onRemoveDirStart(UserDetails user, File workingDir, String dirName);
+    CallbackAction onRemoveDirStart(UserDetails user, File workingDir, String dirName, FtpSession session)
+        throws IOException, FtpException;
 
     /**
      * Notification of success to a delete directory request by the given {@code user}, on the given
@@ -163,7 +173,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onRemoveDirEnd(UserDetails user, File workingDir, String dirName);
+    CallbackAction onRemoveDirEnd(UserDetails user, File workingDir, String dirName, FtpSession session)
+        throws IOException, FtpException;
 
     /**
      * Notification of a create directory request by the given {@code user}, on the given working
@@ -180,7 +191,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onMakeDirStart(UserDetails user, File workingDir, String dirName);
+    CallbackAction onMakeDirStart(UserDetails user, File workingDir, String dirName, FtpSession session)
+        throws IOException, FtpException;
 
     /**
      * Notification of success to a create directory request by the given {@code user}, on the given
@@ -196,7 +208,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onMakeDirEnd(UserDetails user, File workingDir, String dirName);
+    CallbackAction onMakeDirEnd(UserDetails user, File workingDir, String dirName, FtpSession session)
+        throws IOException, FtpException;
 
     /**
      * Notification of a request to append content at the end of the given file by the given
@@ -213,7 +226,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onAppendStart(UserDetails user, File workingDir, String fileName);
+    CallbackAction onAppendStart(UserDetails user, File workingDir, String fileName, FtpSession session)
+        throws IOException, FtpException;
 
     /**
      * Notification of success to an append content to file request by the given {@code user}, on
@@ -229,7 +243,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onAppendEnd(UserDetails user, File workingDir, String fileName);
+    CallbackAction onAppendEnd(UserDetails user, File workingDir, String fileName, FtpSession session)
+        throws IOException, FtpException;
 
     /**
      * Notification of a rename file request by the given {@code user}, on the given working
@@ -250,7 +265,8 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onRenameStart(UserDetails user, File workingDir, File renameFrom, File renameTo);
+    CallbackAction onRenameStart(UserDetails user, File workingDir, File renameFrom, File renameTo,
+        FtpSession session) throws IOException, FtpException;
 
     /**
      * Notification of success to a rename file request by the given {@code user}, on the given
@@ -268,6 +284,21 @@ public interface FTPCallback {
      * @return whether to continue with normal processing of the request, abort, or abort AND shut
      *         down the connection.
      */
-    CallbackAction onRenameEnd(UserDetails user, File workingDir, File renameFrom, File renameTo);
+    CallbackAction onRenameEnd(UserDetails user, File workingDir, File renameFrom, File renameTo,
+        FtpSession session) throws IOException, FtpException;
 
+    
+    /**
+     * Notification of a disconnect of the given {@code user}.
+     * 
+     * @param user
+     *            the GeoServer authenticated user performing the operation
+     * @param workingDir
+     *            the absolute path to the current working directory where the user will be located
+     *            upon successful login.
+     * @return whether to continue with normal processing of the request, abort, or abort AND shut
+     *         down the connection.
+     */
+    CallbackAction onDisconnect(UserDetails user, File workingDir, FtpSession session)
+        throws IOException, FtpException;
 }

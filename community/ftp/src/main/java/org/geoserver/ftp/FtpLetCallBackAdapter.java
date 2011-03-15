@@ -59,7 +59,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
             IOException {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
-        return toFtpResult(callback.onLogin(user, workingDir));
+        return toFtpResult(callback.onLogin(user, workingDir, session));
     }
     
     /**
@@ -73,7 +73,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String fileName = request.getArgument();
-        return toFtpResult(callback.onDeleteStart(user, workingDir, fileName));
+        return toFtpResult(callback.onDeleteStart(user, workingDir, fileName, session));
     }
 
     /**
@@ -87,7 +87,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String fileName = request.getArgument();
-        return toFtpResult(callback.onDeleteEnd(user, workingDir, fileName));
+        return toFtpResult(callback.onDeleteEnd(user, workingDir, fileName, session));
     }
 
     /**
@@ -101,7 +101,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String fileName = request.getArgument();
-        return toFtpResult(callback.onUploadStart(user, workingDir, fileName));
+        return toFtpResult(callback.onUploadStart(user, workingDir, fileName, session));
     }
 
     /**
@@ -115,7 +115,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String fileName = request.getArgument();
-        return toFtpResult(callback.onUploadEnd(user, workingDir, fileName));
+        return toFtpResult(callback.onUploadEnd(user, workingDir, fileName, session));
     }
 
     /**
@@ -129,7 +129,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String fileName = request.getArgument();
-        return toFtpResult(callback.onDownloadStart(user, workingDir, fileName));
+        return toFtpResult(callback.onDownloadStart(user, workingDir, fileName, session));
     }
 
     /**
@@ -143,7 +143,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String fileName = request.getArgument();
-        return toFtpResult(callback.onDownloadEnd(user, workingDir, fileName));
+        return toFtpResult(callback.onDownloadEnd(user, workingDir, fileName, session));
     }
 
     /**
@@ -157,7 +157,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String dirName = request.getArgument();
-        return toFtpResult(callback.onRemoveDirStart(user, workingDir, dirName));
+        return toFtpResult(callback.onRemoveDirStart(user, workingDir, dirName, session));
     }
 
     /**
@@ -171,7 +171,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String dirName = request.getArgument();
-        return toFtpResult(callback.onRemoveDirEnd(user, workingDir, dirName));
+        return toFtpResult(callback.onRemoveDirEnd(user, workingDir, dirName, session));
     }
 
     /**
@@ -185,7 +185,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String dirName = request.getArgument();
-        return toFtpResult(callback.onMakeDirStart(user, workingDir, dirName));
+        return toFtpResult(callback.onMakeDirStart(user, workingDir, dirName, session));
     }
 
     /**
@@ -199,7 +199,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String dirName = request.getArgument();
-        return toFtpResult(callback.onMakeDirEnd(user, workingDir, dirName));
+        return toFtpResult(callback.onMakeDirEnd(user, workingDir, dirName, session));
     }
 
     /**
@@ -213,7 +213,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String fileName = request.getArgument();
-        return toFtpResult(callback.onAppendStart(user, workingDir, fileName));
+        return toFtpResult(callback.onAppendStart(user, workingDir, fileName, session));
     }
 
     /**
@@ -227,7 +227,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String fileName = request.getArgument();
-        return toFtpResult(callback.onAppendEnd(user, workingDir, fileName));
+        return toFtpResult(callback.onAppendEnd(user, workingDir, fileName, session));
     }
 
     /**
@@ -246,7 +246,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String fileName = request.getArgument();
-        return toFtpResult(callback.onUploadStart(user, workingDir, fileName));
+        return toFtpResult(callback.onUploadStart(user, workingDir, fileName, session));
     }
 
     /**
@@ -266,7 +266,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         UserDetails user = user(session.getUser());
         File workingDir = workingDir(session);
         String fileName = request.getArgument();
-        return toFtpResult(callback.onUploadEnd(user, workingDir, fileName));
+        return toFtpResult(callback.onUploadEnd(user, workingDir, fileName, session));
     }
 
     /**
@@ -282,7 +282,7 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         String fileName = request.getArgument();
         File renameTo = new File(workingDir, fileName);
         File renameFrom = new File(session.getRenameFrom().getAbsolutePath());
-        return toFtpResult(callback.onRenameStart(user, workingDir, renameFrom, renameTo));
+        return toFtpResult(callback.onRenameStart(user, workingDir, renameFrom, renameTo, session));
     }
 
     /**
@@ -298,7 +298,19 @@ class FtpLetCallBackAdapter extends DefaultFtplet {
         String fileName = request.getArgument();
         File renameTo = new File(workingDir, fileName);
         File renameFrom = new File(session.getRenameFrom().getAbsolutePath());
-        return toFtpResult(callback.onRenameEnd(user, workingDir, renameFrom, renameTo));
+        return toFtpResult(callback.onRenameEnd(user, workingDir, renameFrom, renameTo, session));
+    }
+    
+    /**
+     * Notifies the {@link FTPCallback} that the client disconnecting.
+     * 
+     * @see FTPCallback#onDisconnect
+     */
+    @Override
+    public FtpletResult onDisconnect(FtpSession session) throws FtpException, IOException {
+        UserDetails user = user(session.getUser());
+        File workingDir = workingDir(session);
+        return toFtpResult(callback.onDisconnect(user, workingDir, session));
     }
 
     private static FtpletResult toFtpResult(CallbackAction action) {
